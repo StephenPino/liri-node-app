@@ -1,0 +1,28 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "Liri search app",
+  "main": "liri.js",
+  "dependencies": {
+    "twitter": "^1.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "my-tweets"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smp2543/liri-node-app.git"
+  },
+  "keywords": [
+    "liri",
+    "node",
+    "app"
+  ],
+  "author": "Stephen Pino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/smp2543/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/smp2543/liri-node-app#readme"
+}
