@@ -21,8 +21,7 @@ function twitterLogic() {
     }
     console.log('Displaying latest tweets from user ' + params.screen_name + ' :\n-------------------------------------------');
     for (var i = 0; i < 5; i++) {
-      console.log('Tweet: ' + tweets[i].text);
-      console.log('Time tweeted: ' + tweets[i].created_at + '\n--------------------------------');
+      console.log('Tweet: ' + tweets[i].text + '\nTime tweeted: ' + tweets[i].created_at + '\n--------------------------------');
     }
   });
 }
@@ -45,11 +44,7 @@ function spotifyLogic(song) {
       console.log('Error occurred: ' + err);
       return;
     }
-    console.log('Artist name: ' + data.tracks.items[0].artists[0].name);
-    console.log('Song name: ' + data.tracks.items[0].name);
-    console.log('Preview link: ' + data.tracks.items[0].preview_url);
-    console.log('Album name: ' + data.tracks.items[0].album.name);
-    console.log('------------------------------------------------');
+    console.log('Artist name: ' + data.tracks.items[0].artists[0].name + '\nSong name: ' + data.tracks.items[0].name + '\nPreview link: ' + data.tracks.items[0].preview_url + '\nAlbum name: ' + data.tracks.items[0].album.name + '\n------------------------------------------------');
   });
 }
 
