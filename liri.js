@@ -29,16 +29,16 @@ function twitterLogic() {
 
 function spotifyLogic(song) {
   var songQuery = '';
-  if (song){
+  if (song) {
     songQuery = song;
   }
-  else{
-  for (var i = 3; i < nodeArgs.length; i++) {
-    songQuery += nodeArgs[i] + ' ';
-  }
-  if (songQuery === '') {
-    songQuery = 'The Sign Ace of Base';
-  }
+  else {
+    for (var i = 3; i < nodeArgs.length; i++) {
+      songQuery += nodeArgs[i] + ' ';
+    }
+    if (songQuery === '') {
+      songQuery = 'The Sign Ace of Base';
+    }
   }
   spotify.search({ type: 'track', query: songQuery }, function (err, data) {
     if (err) {
