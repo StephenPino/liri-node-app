@@ -1,6 +1,7 @@
 var twitterKeys = require('./keys.js')
 var Twitter = require('twitter');
 var spotify = require('spotify');
+var request = require('request');
 var nodeArgs = process.argv;
 var arg1 = process.argv[2];
 var arg2 = process.argv[3];
@@ -29,7 +30,7 @@ if (arg1 === 'my-tweets') {
 //Spotify logic
 else if (arg1 === 'spotify-this-song') {
   var songQuery = '';
-  for (var i = 3; i < nodeArgs.length; i++){
+  for (var i = 3; i < nodeArgs.length; i++) {
     songQuery += nodeArgs[i] + ' ';
   }
   if (songQuery === '') {
@@ -45,6 +46,42 @@ else if (arg1 === 'spotify-this-song') {
     console.log('Preview link: ' + data.tracks.items[0].preview_url);
     console.log('Album name: ' + data.tracks.items[0].album.name);
     console.log('------------------------------------------------');
+  });
+}
+// OMDB logic
+else if (arg1 === 'movie-this') {
+  var movieName = '';
+  for (var i = 3; i < nodeArgs.length; i++) {
+    if (i > 3 && i < nodeArgs.length) {
+      movieName = movieName + "+" + nodeArgs[i];
+    }
+    else {
+      movieName += nodeArgs[i];
+    }
+  }
+  if (movieName === '') {
+    movieName = 'Mr.+Nobody';
+  }
+  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&r=json";
+  request(queryUrl, function (error, response, body) {
+    if (error) {
+      return console.log('Error: ' + error);
+    }
+    else if (!error && response.statusCode === 200) {
+      var tomatoUrl = '';
+      var newChar = '%20';
+      tomatoUrl = movieName.split('+').join(newChar);
+      console.log("Title: " + JSON.parse(body).Title);
+      console.log("Release date: " + JSON.parse(body).Year);
+      console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+      console.log("Country produced in: " + JSON.parse(body).Country);
+      console.log("Language: " + JSON.parse(body).Language);
+      console.log("Plot: " + JSON.parse(body).Plot);
+      console.log("Actors: " + JSON.parse(body).Actors);
+      console.log("Rotten Tomatoes rating: " + JSON.parse(body).Ratings[1].Value);
+      console.log("Rotten Tomatoes URL: " + 'https://www.rottentomatoes.com/search/?search=' + tomatoUrl);
+      console.log("----------------------------------------------------------------------------------------------------");
+    }
   });
 }
 else {
