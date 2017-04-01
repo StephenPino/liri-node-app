@@ -2,9 +2,9 @@ var twitterKeys = require('./keys.js')
 var Twitter = require('twitter');
 var spotify = require('spotify');
 var request = require('request');
+var fs = require('fs');
 var nodeArgs = process.argv;
 var arg1 = process.argv[2];
-var arg2 = process.argv[3];
 
 var client = new Twitter({
   consumer_key: twitterKeys.twitterKeys.consumer_key,
@@ -13,8 +13,7 @@ var client = new Twitter({
   access_token_secret: twitterKeys.twitterKeys.access_token_secret
 });
 
-// Twitter logic
-if (arg1 === 'my-tweets') {
+function twitterLogic() {
   var params = { screen_name: 'spino725' };
   client.get('statuses/user_timeline', params, function (error, tweets, response) {
     if (error) {
@@ -27,14 +26,19 @@ if (arg1 === 'my-tweets') {
     }
   });
 }
-//Spotify logic
-else if (arg1 === 'spotify-this-song') {
+
+function spotifyLogic(song) {
   var songQuery = '';
+  if (song){
+    songQuery = song;
+  }
+  else{
   for (var i = 3; i < nodeArgs.length; i++) {
     songQuery += nodeArgs[i] + ' ';
   }
   if (songQuery === '') {
     songQuery = 'The Sign Ace of Base';
+  }
   }
   spotify.search({ type: 'track', query: songQuery }, function (err, data) {
     if (err) {
@@ -48,8 +52,8 @@ else if (arg1 === 'spotify-this-song') {
     console.log('------------------------------------------------');
   });
 }
-// OMDB logic
-else if (arg1 === 'movie-this') {
+
+function omdbLogic() {
   var movieName = '';
   for (var i = 3; i < nodeArgs.length; i++) {
     if (i > 3 && i < nodeArgs.length) {
@@ -84,6 +88,33 @@ else if (arg1 === 'movie-this') {
     }
   });
 }
-else {
-  console.log('Unknown Command\nHere is a list of available commands: \n-------------------\nmy-tweets\nspotify-this-song <song name here>\nmovie-this <movie name here>\ndo-what-it-says\n---------------------')
+
+function argumentLogic(song) {
+  if (arg1 === 'my-tweets') {
+    twitterLogic();
+  }
+  //Spotify logic
+  else if (arg1 === 'spotify-this-song') {
+    spotifyLogic(song);
+  }
+  // OMDB logic
+  else if (arg1 === 'movie-this') {
+    omdbLogic();
+  }
+  else if (arg1 === 'do-what-it-says') {
+    fs.readFile('random.txt', 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+      var splitData = data.split(',');
+      arg1 = splitData[0];
+      var passedObject = splitData[1];
+      argumentLogic(passedObject);
+    });
+  }
+  else {
+    console.log('Unknown Command\nHere is a list of available commands: \n-------------------\nmy-tweets\nspotify-this-song <song name here>\nmovie-this <movie name here>\ndo-what-it-says\n---------------------')
+  }
 }
+
+argumentLogic();
